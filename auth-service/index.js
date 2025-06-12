@@ -16,7 +16,7 @@ app.use(cookieParser());
 app.use('/api/auth', authRoutes);
 
 mongoose
-  .connect('mongodb://localhost:3200/devops-final')
+  .connect(process.env.DATABASE_URI)
   .then(() => console.log('MongoDB connected'))
   .catch((err) => console.error('MongoDB connection error:', err));
 
