@@ -4,7 +4,6 @@ from models import db, Post
 import logging
 from sqlalchemy.exc import SQLAlchemyError
 
-# Set up logging
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
@@ -14,18 +13,15 @@ routes = Blueprint('routes', __name__)
 @jwt_required()
 def create_post():
     try:
-        # Get the username from JWT claims
         claims = get_jwt_identity()
         username = claims['username'] if isinstance(claims, dict) else claims
         logger.debug(f"Username from JWT: {username}")
 
-        # Get JSON data from request
         data = request.json
         if not data or 'content' not in data:
             logger.error("Missing required 'content' field in request data")
             return jsonify(msg="Content is required"), 400
 
-        # Create new Post instance
         post = Post(
             content=data['content'],
             description=data.get('description', ''),
@@ -33,12 +29,10 @@ def create_post():
             username=username
         )
 
-        # Add post to session and attempt to commit
         db.session.add(post)
         db.session.commit()
         logger.info(f"Post created successfully by user {username} with ID {post.id}")
 
-        # Verify the post was saved by querying the database
         saved_post = Post.query.filter_by(id=post.id).first()
         if saved_post:
             logger.debug(f"Verified: Post with ID {post.id} exists in database")
@@ -48,12 +42,10 @@ def create_post():
             return jsonify(msg="Failed to verify post in database"), 500
 
     except SQLAlchemyError as e:
-        # Roll back the session in case of database errors
         db.session.rollback()
         logger.error(f"Database error: {str(e)}")
         return jsonify(msg=f"Database error: {str(e)}"), 500
     except Exception as e:
-        # Handle any other unexpected errors
         db.session.rollback()
         logger.error(f"Unexpected error: {str(e)}")
         return jsonify(msg=f"Unexpected error: {str(e)}"), 500
