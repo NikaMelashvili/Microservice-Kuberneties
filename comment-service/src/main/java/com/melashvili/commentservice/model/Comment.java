@@ -15,6 +15,7 @@ import java.util.Date;
 public class Comment {
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "post_id")
