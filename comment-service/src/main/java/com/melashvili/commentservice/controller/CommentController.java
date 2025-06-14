@@ -26,6 +26,7 @@ public class CommentController {
         return new ResponseEntity<>(commentService.addComment(addCommentDTO), HttpStatus.CREATED);
     }
 
+    @CrossOrigin(origins = "http://localhost:5000", allowCredentials = "true")
     @RequestMapping(path = "/get/{id}")
     public ResponseEntity<List<Comment>> findAllComments(@PathVariable Long id) {
         return new ResponseEntity<>(commentService.getAllById(id), HttpStatus.OK);
