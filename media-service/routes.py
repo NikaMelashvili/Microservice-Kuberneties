@@ -1,3 +1,4 @@
+import requests
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from models import db, Post
@@ -50,12 +51,30 @@ def create_post():
         logger.error(f"Unexpected error: {str(e)}")
         return jsonify(msg=f"Unexpected error: {str(e)}"), 500
 
-
 @routes.route('/posts', methods=['GET'])
 @jwt_required()
 def get_posts():
     posts = Post.query.all()
-    return jsonify([{'id': p.id, 'content': p.content} for p in posts])
+    combined_data = []
+
+    for post in posts:
+        try:
+            res = requests.get(f'http://localhost:8080/rest/comments/get/{post.id}')
+            comments = res.json() if res.status_code == 200 else []
+        except Exception as e:
+            comments = []
+
+        combined_data.append({
+            'id': post.id,
+            'content': post.content,
+            'description': post.description,
+            'image_url': post.image_url,
+            'username': post.username,
+            'created_at': post.created_at.isoformat(),
+            'comments': comments
+        })
+
+    return jsonify(combined_data)
 
 @routes.route('/posts/<int:id>', methods=['PUT'])
 @jwt_required()
