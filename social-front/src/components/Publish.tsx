@@ -101,7 +101,7 @@ const Publish = () => {
         image_url: imageBase64,
       };
 
-      await axios.post('http://127.0.0.1:5000/posts', postData, {
+      await axios.post('http://127.0.0.1:5001/posts', postData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',

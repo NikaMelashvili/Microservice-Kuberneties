@@ -4,6 +4,7 @@ from flask_jwt_extended import JWTManager
 from models import db
 from routes import routes
 from config import Config
+from db_init import init_db
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True, origins=["http://localhost:5173"])
@@ -14,7 +15,7 @@ JWTManager(app)
 
 app.register_blueprint(routes)
 
+init_db(app)
+
 if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
     app.run(debug=True)

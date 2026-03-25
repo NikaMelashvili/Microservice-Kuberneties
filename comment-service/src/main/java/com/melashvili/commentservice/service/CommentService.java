@@ -3,11 +3,9 @@ package com.melashvili.commentservice.service;
 import com.melashvili.commentservice.model.AddCommentDTO;
 import com.melashvili.commentservice.model.Comment;
 import com.melashvili.commentservice.repository.CommentRepository;
-import org.hibernate.annotations.CurrentTimestamp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 

@@ -41,7 +41,7 @@ const Landing = () => {
         }
 
         const response = await axios.get<Post[]>(
-          'http://127.0.0.1:5000/posts',
+          'http://127.0.0.1:5001/posts',
           {
             headers: {
               Authorization: `Bearer ${token}`,

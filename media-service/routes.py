@@ -59,7 +59,7 @@ def get_posts():
 
     for post in posts:
         try:
-            res = requests.get(f'http://localhost:8080/rest/comments/get/{post.id}')
+            res = requests.get(f'http://comment-service:8080/rest/comments/get/{post.id}')
             comments = res.json() if res.status_code == 200 else []
         except Exception as e:
             comments = []
